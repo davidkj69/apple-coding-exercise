@@ -1,5 +1,3 @@
-import org.junit.Assert;
-import org.junit.Test;
 
 /**
  * Copyright (C) 2010 Apple Inc.
@@ -10,4 +8,5 @@ import org.junit.Test;
  * Use junit annotations to identify your test methods.
  */
 public final class AppleExerciseTest {
+
 }

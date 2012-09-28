@@ -1,4 +1,9 @@
-import java.util.*;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Copyright (C) 2010 Apple Inc.
@@ -14,8 +19,8 @@ public class AppleExercise {
     /**
      * BEFORE STARTING: please add your name below so that we know who you are.
      *
-     * NAME:
-     * DATE:
+     * NAME: David Kjerrumgaard
+     * DATE: 09/28/2012
      *
      */
 
@@ -57,6 +62,46 @@ public class AppleExercise {
          *
          * Name it {@link AppleExercise.Problem1.SingletonCache}
          */
+        public static class SingletonCache implements Cache {
+
+        	private static SingletonCache singletonInstance;
+        	private ConcurrentHashMap<Object, Object> dataStore;
+        	
+        	/*
+        	 * Avoid lazy initialization which is unsafe, even if
+        	 * you account for the Double Checked Locking (DCL) problem.
+        	 */
+        	static {
+                synchronized (SingletonCache.class) {
+                    if (SingletonCache.singletonInstance == null) {
+                    	SingletonCache.singletonInstance = new SingletonCache();
+                    }
+                }
+        	}
+        	
+        	public static SingletonCache getInstance() {
+        		return singletonInstance;
+        	}
+        	
+        	private SingletonCache() {
+        		dataStore = new ConcurrentHashMap<Object,Object> ();
+        	}
+        	
+			@Override
+			public void put(Object key, Object value) {	
+				if ( (key != null) && (value != null) )
+					dataStore.put(key, value);
+			}
+
+			@Override
+			public Object get(Object key) {
+				if (key != null)
+					return dataStore.get(key);
+				else
+					return null;
+			}
+        	
+        }
 
         /**
          * Problem 1.2
@@ -69,6 +114,45 @@ public class AppleExercise {
          *
          * Name it {@link AppleExercise.Problem1.ThreadSafeCache}
          */
+        public static class ThreadSafeCache implements Cache {
+        	
+        	private static ThreadSafeCache singletonInstance;
+        	private ConcurrentHashMap<Object, Object> dataStore;
+        	
+        	/*
+        	 * Avoid lazy initialization which is unsafe, even if
+        	 * you account for the Double Checked Locking (DCL) problem.
+        	 */
+        	static {
+                synchronized (ThreadSafeCache.class) {
+                    if (ThreadSafeCache.singletonInstance == null) {
+                    	ThreadSafeCache.singletonInstance = new ThreadSafeCache();
+                    }
+                }
+        	}
+        	
+        	public static ThreadSafeCache getInstance() {
+        		return singletonInstance;
+        	}
+        	
+        	private ThreadSafeCache() {
+        		dataStore = new ConcurrentHashMap<Object,Object> ();
+        	}
+        	
+			@Override
+			public void put(Object key, Object value) {	
+				if ( (key != null) && (value != null) )
+					dataStore.put(key, value);
+			}
+
+			@Override
+			public Object get(Object key) {
+				if (key != null)
+					return dataStore.get(key);
+				else
+					return null;
+			}        	
+        }
 
         /**
          * Problem 1.3
@@ -77,6 +161,21 @@ public class AppleExercise {
          *
          * Name it {@link AppleExercise.Problem1.GenericCache}
          */
+        public static class GenericCache implements Cache {
+
+			@Override
+			public void put(Object key, Object value) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public Object get(Object key) {
+				// TODO Auto-generated method stub
+				return null;
+			}
+        	
+        }
     }
 
     /**
