@@ -1,0 +1,94 @@
+<!--
+  Copyright (C) 2010 Apple Inc.
+-->
+<project name="appleExercise" default="main">
+    <dirname property="pwd" file="${ant.file}" />
+
+    <target name="init">
+        <property name="project.home" value="${pwd}"/>
+        <property name="dir.src" value="${project.home}/src"/>
+        <property name="dir.src.java" value="${dir.src}/java"/>
+        <property name="dir.src.scripts" value="${dir.src}/scripts"/>
+        <property name="dir.src.test" value="${dir.src}/test"/>
+        <property name="dir.lib" value="${project.home}/lib"/>
+        <property name="dir.build" value="${project.home}/build"/>
+        <property name="dir.build.classes" value="${dir.build}/classes"/>
+        <property name="dir.build.classes.component" value="${dir.build.classes}/component"/>
+        <property name="dir.build.classes.test" value="${dir.build.classes}/test"/>
+        <property name="dir.build.report.junit" value="${dir.build}/report/junit"/>
+        <property name="dir.build.report.junit.html" value="${dir.build}/report/junit/html"/>
+        <property name="dir.build.report.junit.xml" value="${dir.build}/report/junit/xml"/>
+
+        <property name="project.debug" value="true"/>
+        <property name="project.deprecation" value="true"/>
+        <property name="project.optimize" value="true"/>
+   </target>
+
+    <target name="compile-java" depends="init">
+        <mkdir dir="${dir.build.classes.component}"/>
+        <path id="classpath.compile"/>
+        <property name="javac.exclude" value=""/>
+        <javac srcdir="${dir.src.java}" destdir="${dir.build.classes.component}" excludes="${javac.exclude}"
+               classpathref="classpath.compile" optimize="${project.optimize}" debug="${project.debug}"
+               failonerror="true" deprecation="${project.deprecation}">
+            <compilerarg value="-Xlint"/>
+            <compilerarg value="-Xlint:-path"/>
+            <compilerarg value="-Werror"/>
+        </javac>
+    </target>
+
+    <target name="compile-test" depends="init, compile-java">
+        <path id="classpath.test">
+            <pathelement location="${dir.build.classes.component}"/>
+            <pathelement location="${dir.lib}/junit-4.4.jar"/>
+        </path>
+        <mkdir dir="${dir.build.classes.test}"/>
+        <javac srcdir="${dir.src.test}" destdir="${dir.build.classes.test}" classpathref="classpath.test"
+               optimize="${project.optimize}" debug="${project.debug}" failonerror="true"
+               deprecation="${project.deprecation}">
+            <compilerarg value="-Xlint"/>
+        </javac>
+    </target>
+
+    <target name="compile" depends="init, compile-java, compile-test"/>
+
+    <target name="junit" depends="init, compile-test">
+        <mkdir dir="${dir.build.report.junit.xml}"/>
+        <mkdir dir="${dir.build.report.junit.html}"/>
+        <junit fork="true" printsummary="true" failureproperty="junit.failed">
+            <batchtest todir="${dir.build.report.junit.xml}">
+                <fileset dir="${dir.build.classes.test}">
+                    <include name="**/*Test.class"/>
+                </fileset>
+            </batchtest>
+            <classpath>
+                <pathelement location="${dir.lib}/junit-4.4.jar"/>
+                <pathelement location="${dir.build.classes.component}"/>
+                <pathelement location="${dir.build.classes.test}"/>
+            </classpath>
+            <formatter type="xml"/>
+        </junit>
+        <junitreport todir="${dir.build.report.junit.xml}">
+            <fileset dir="${dir.build.report.junit.xml}">
+                <include name="TEST-*.xml"/>
+            </fileset>
+            <report format="frames" todir="${dir.build.report.junit.html}"/>
+        </junitreport>
+    </target>
+
+    <target name="junit-check-error" if="junit.failed">
+        <condition property="junit.report.url" value="${dir.build.report.junit.html}/index.html">
+            <matches pattern="^http" string="${dir.build.report.junit.html}"/>
+        </condition>
+        <property name="junit.report.url" value="file://${dir.build.report.junit.html}/index.html"/>
+        <echo message="Please open the file below in your browser to see the junit report."/>
+        <echo message="${junit.report.url}"/>
+        <fail message="JUnit tests failed."/>
+    </target>
+
+    <target name="clean" depends="init">
+        <delete dir="${dir.build}" failonerror="false"/>
+    </target>
+
+    <target name="main" depends="init, clean, compile, junit, junit-check-error"/>
+</project>
