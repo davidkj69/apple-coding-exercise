@@ -1,5 +1,4 @@
 package com.apple.interview;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
@@ -7,7 +6,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import com.apple.interview.iterator.MyIterator;
+import com.apple.interview.iterator.ArrayBackedIterator;
+import com.apple.interview.iterator.IteratorBackedIterator;
+import com.apple.interview.iterator.IteratorFactory;
+import com.apple.interview.iterator.ThreeDimArrayBackedIterator;
+import com.apple.interview.iterator.TwoDimArrayBackedIterator;
 
 /**
  * Copyright (C) 2010 Apple Inc.
@@ -206,7 +209,7 @@ public class AppleExercise {
          * @return an iterator of strings
          */
         public static Iterator<String> iterateStrings(String... strings) {
-            return new MyIterator<String>(strings);
+            return IteratorFactory.iterator(strings);
         }
 
         /**
@@ -219,7 +222,7 @@ public class AppleExercise {
          * @return an {@link java.util.Iterator} of {@code String}s
          */
         public static Iterator<String> iterateStrings(Iterator<String>... stringIterators) {
-            return new MyIterator<String>(stringIterators);
+            return IteratorFactory.iterator(stringIterators);
         }
 
         /**
@@ -232,7 +235,7 @@ public class AppleExercise {
          * @return an {@link java.util.Iterator} of {@code String}s
          */
         public static Iterator<String> iterateStrings(String[]... stringArrays) {
-        	return new MyIterator<String>(stringArrays);
+        	return IteratorFactory.iterator(stringArrays);
         }
 
         /**
@@ -245,7 +248,7 @@ public class AppleExercise {
          * @return an {@link java.util.Iterator} of {@code Integer}s
          */
         public static Iterator<Integer> iterateInts(Integer[][]... twoDimensionalIntArrays) {            
-            return new MyIterator<Integer>(twoDimensionalIntArrays);
+            return IteratorFactory.iterator(twoDimensionalIntArrays);
         }
 
         /**
