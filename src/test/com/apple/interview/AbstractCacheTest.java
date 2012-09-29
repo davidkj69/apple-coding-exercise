@@ -1,8 +1,11 @@
+package com.apple.interview;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 
 import org.junit.Before;
 import org.junit.Test;
+
+import com.apple.interview.AppleExercise.Problem1.Cache;
 
 /**
  * A collection of tests that ALL Cache implements must pass
@@ -13,7 +16,7 @@ import org.junit.Test;
  */
 public abstract class AbstractCacheTest {
 
-	protected AppleExercise.Problem1.Cache cache;
+	protected Cache cache;
 	
 	/* ---------------------------------------------------
 	 * Abstract method definitions
@@ -33,16 +36,9 @@ public abstract class AbstractCacheTest {
 	 * ---------------------------------------------------
 	 */
 	@Test
-	public void duplicateKeyTest() {
-		cache.put("duplicate", "value");
-		cache.put("duplicate", "value");		
-		assertEquals("value", cache.get("duplicate"));
-	}
-	
-	@Test
 	public void nullKeyTest() {
 		cache.put(null, "value");
-		assertEquals("value", cache.get(null));
+		assertEquals(null, cache.get(null));
 	}
 	
 	@Test
@@ -61,6 +57,14 @@ public abstract class AbstractCacheTest {
 		cache.put("foo", "bar");
 		assertEquals("bar", cache.get("foo"));
 	}
+	
+	@Test
+	public void putOverwriteTest() {
+		cache.put("duplicate", "foo");
+		cache.put("duplicate", "bar");		
+		assertEquals("bar", cache.get("duplicate"));
+	}
+	
 	
 	@Test
 	public void getTest() {

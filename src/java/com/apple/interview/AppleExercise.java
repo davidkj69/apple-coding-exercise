@@ -1,9 +1,13 @@
+package com.apple.interview;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+
+import com.apple.interview.iterator.MyIterator;
 
 /**
  * Copyright (C) 2010 Apple Inc.
@@ -65,7 +69,7 @@ public class AppleExercise {
         public static class SingletonCache implements Cache {
 
         	private static SingletonCache singletonInstance;
-        	private ConcurrentHashMap<Object, Object> dataStore;
+        	private HashMap<Object, Object> dataStore;
         	
         	/*
         	 * Avoid lazy initialization which is unsafe, even if
@@ -84,7 +88,7 @@ public class AppleExercise {
         	}
         	
         	private SingletonCache() {
-        		dataStore = new ConcurrentHashMap<Object,Object> ();
+        		dataStore = new HashMap<Object,Object> ();
         	}
         	
 			@Override
@@ -161,18 +165,20 @@ public class AppleExercise {
          *
          * Name it {@link AppleExercise.Problem1.GenericCache}
          */
-        public static class GenericCache implements Cache {
-
-			@Override
-			public void put(Object key, Object value) {
-				// TODO Auto-generated method stub
-				
+        public static class GenericCache<K,V>  {
+        	
+        	private ConcurrentHashMap<K, V> dataStore = new ConcurrentHashMap<K,V> ();
+        	
+			public void put(K key, V value) {	
+				if ( (key != null) && (value != null) ) 
+					dataStore.put(key, value);
 			}
 
-			@Override
-			public Object get(Object key) {
-				// TODO Auto-generated method stub
-				return null;
+			public V get(Object key) {	
+				if (key == null)
+					return null;
+				
+				return dataStore.get(key);
 			}
         	
         }
@@ -200,8 +206,7 @@ public class AppleExercise {
          * @return an iterator of strings
          */
         public static Iterator<String> iterateStrings(String... strings) {
-            // TODO
-            return null;
+            return new MyIterator<String>(strings);
         }
 
         /**
@@ -214,8 +219,7 @@ public class AppleExercise {
          * @return an {@link java.util.Iterator} of {@code String}s
          */
         public static Iterator<String> iterateStrings(Iterator<String>... stringIterators) {
-            // TODO
-            return null;
+            return new MyIterator<String>(stringIterators);
         }
 
         /**
@@ -228,8 +232,7 @@ public class AppleExercise {
          * @return an {@link java.util.Iterator} of {@code String}s
          */
         public static Iterator<String> iterateStrings(String[]... stringArrays) {
-            // TODO
-            return null;
+        	return new MyIterator<String>(stringArrays);
         }
 
         /**
@@ -241,9 +244,8 @@ public class AppleExercise {
          * @param twoDimensionalIntArrays an array of nullable {@code Integer[][]}s of nullable values
          * @return an {@link java.util.Iterator} of {@code Integer}s
          */
-        public static Iterator<Integer> iterateInts(Integer[][]... twoDimensionalIntArrays) {
-            // TODO
-            return null;
+        public static Iterator<Integer> iterateInts(Integer[][]... twoDimensionalIntArrays) {            
+            return new MyIterator<Integer>(twoDimensionalIntArrays);
         }
 
         /**

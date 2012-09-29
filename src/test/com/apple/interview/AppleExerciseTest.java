@@ -1,3 +1,4 @@
+package com.apple.interview;
 
 /**
  * Copyright (C) 2010 Apple Inc.
