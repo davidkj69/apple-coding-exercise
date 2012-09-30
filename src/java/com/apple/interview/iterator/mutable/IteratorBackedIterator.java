@@ -1,26 +1,21 @@
-package com.apple.interview.iterator;
+package com.apple.interview.iterator.mutable;
 
 import java.util.Iterator;
 
-public abstract class MultiDimArrayBackedIterator<E> implements Iterator<E> {
+public class IteratorBackedIterator<E> implements Iterator<E> {
 
-	/* -----------------------------------------------------------------------
-	 * Instance Variables
-	 * -----------------------------------------------------------------------
-	 */
+	private Iterator<E>[] data;
+	
 	/**
 	 * Keep track of the current array we are using
 	 */
-	protected int currentArrayPointer = 0;
+	private int currentArrayPointer = 0;
 	
-	protected Iterator<E> currentIterator;
+	private Iterator<E> currentIterator;
 	
-	
-	/* -----------------------------------------------------------------------
-	 * Abstract Method definitions
-	 * -----------------------------------------------------------------------
-	 */
-	protected abstract void increment();
+	public IteratorBackedIterator(Iterator<E>...arrays) {
+		this.data = arrays;
+	}
 	
 	
 	/* ------------------------------------------------------------------------
@@ -29,6 +24,12 @@ public abstract class MultiDimArrayBackedIterator<E> implements Iterator<E> {
 	 */
 	@Override
 	public boolean hasNext() {
+		if (data == null)
+			return false;
+		
+		if (currentArrayPointer >= data.length)
+			return false;
+		
 		return getCurrentIterator().hasNext();
 	}
 
@@ -57,5 +58,18 @@ public abstract class MultiDimArrayBackedIterator<E> implements Iterator<E> {
 		}
 		return currentIterator;
 	}
+
 	
+	private void increment() {
+
+		Iterator<E> next = null;
+
+		do {
+			next  = data[currentArrayPointer++];
+		} while ( (next == null) && (currentArrayPointer < data.length) );
+
+		if (next != null)
+			currentIterator = next;
+
+	}
 }

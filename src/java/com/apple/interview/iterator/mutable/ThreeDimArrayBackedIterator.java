@@ -1,4 +1,4 @@
-package com.apple.interview.iterator;
+package com.apple.interview.iterator.mutable;
 
 
 public class ThreeDimArrayBackedIterator<E> extends MultiDimArrayBackedIterator<E> {

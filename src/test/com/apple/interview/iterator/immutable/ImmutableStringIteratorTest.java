@@ -1,8 +1,9 @@
-package com.apple.interview;
+package com.apple.interview.iterator.immutable;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
@@ -10,9 +11,11 @@ import java.util.Iterator;
 
 import org.junit.Test;
 
+import com.apple.interview.AppleExercise;
 import com.apple.interview.AppleExercise.Problem2;
 
-public class StringIteratorTests {
+@SuppressWarnings({"rawtypes","unchecked"})
+public class ImmutableStringIteratorTest {
 
 	/* ---------------------------------------------------
 	 * Test Cases for Problem 2.1
@@ -27,7 +30,7 @@ public class StringIteratorTests {
 		String s = null;
 		Iterator<String> itr = Problem2.iterateStrings(s);
 		assertNotNull(itr);
-//		assertNull(itr.next());
+		assertNull(itr.next());
 		assertFalse(itr.hasNext());
 	}
 	
@@ -121,10 +124,10 @@ public class StringIteratorTests {
 		assertNotNull(itr);
 		assertEquals("Expected the 1st value to be 'one'", "one", itr.next());
 		assertEquals("Expected the 2nd value to be 'two'", "two", itr.next());
-		itr.remove();
+		list[2] = null;
 		assertEquals("Expected the 3rd value to be 'four'", "four", itr.next());
 		assertEquals("Expected the 4th value to be 'five'", "five", itr.next());
-		itr.remove();
+		list[5] = null;
 		assertFalse("Expected the iterator to have no more elements", itr.hasNext());
 	}
 	
@@ -175,7 +178,7 @@ public class StringIteratorTests {
 		b.add("B");
 		c.add("C");
 		
-		Iterator[] stringIterators = {a.iterator(), b.iterator(), c.iterator()};
+		Iterator[] stringIterators = {a.iterator(), b.iterator(), c.iterator()};;
 		
 		Iterator<String> itr = Problem2.iterateStrings(stringIterators);
 		assertNotNull(itr);
@@ -232,20 +235,20 @@ public class StringIteratorTests {
 		assertEquals("Expected the 1st value to be 'A'", "A", itr.next());
 		assertEquals("Expected the 2nd value to be 'B'", "B", itr.next());
 		
+		// Add some values to the underlying data structure
 		b.add("E");
 		b.add("F");
+		
+		// Make sure we ignore those changes
 		assertEquals("Expected the 3rd value to be 'C'", "C", itr.next());
 		assertEquals("Expected the 4th value to be 'D'", "D", itr.next());
-		assertEquals("Expected the 5th value to be 'E'", "E", itr.next());
-		assertEquals("Expected the 6th value to be 'F'", "F", itr.next());
-		assertEquals("Expected the 7th value to be 'G'", "G", itr.next());
+		assertEquals("Expected the 5th value to be 'G'", "G", itr.next());
+		
+		// Add some values to the underlying data structure
 		c.add("H");
 		c.add("I");
 		
-		assertEquals("Expected the 7th value to be 'H'", "H", itr.next());
-		assertEquals("Expected the 7th value to be 'I'", "I", itr.next());
-		
-		assertFalse("Expected the iterator to return only 9 values", itr.hasNext());
+		assertFalse("Expected the iterator to return only 5 values", itr.hasNext());
 		
 	}
 	
@@ -268,9 +271,13 @@ public class StringIteratorTests {
 		assertEquals("Expected the 1st value to be 'A'", "A", itr.next());
 		assertEquals("Expected the 2nd value to be 'B'", "B", itr.next());
 		
+		// Remove an item from the underlying data structure
 		a.remove("C");
-		assertEquals("Expected the 3rd value to be 'D'", "D", itr.next());
-		assertEquals("Expected the 4th value to be 'E'", "E", itr.next());
+				
+		// Make sure we ignore the removal
+		assertEquals("Expected the 3rd value to be 'C'", "C", itr.next());
+		assertEquals("Expected the 4th value to be 'D'", "D", itr.next());
+		assertEquals("Expected the 5th value to be 'E'", "E", itr.next());
 		
 	}
 	
@@ -285,7 +292,7 @@ public class StringIteratorTests {
 		c.add("E");
 		
 		Iterator[] stringIterators = {null, a.iterator(), null, b.iterator(), null, c.iterator(), null};
-		
+				
 		Iterator<String> itr = Problem2.iterateStrings(stringIterators);
 		assertNotNull(itr);
 		
@@ -399,15 +406,18 @@ public class StringIteratorTests {
 		assertEquals("Expected the 1st value to be 'A'", "A", itr.next());
 		assertEquals("Expected the 2nd value to be 'B'", "B", itr.next());
 		
+		// Change the values 
 		a[2] = "C"; a[3] = "D";
-		assertEquals("Expected the 3rd value to be 'C'", "C", itr.next());
-		assertEquals("Expected the 4th value to be 'D'", "D", itr.next());
 		
+		// Make sure we ignore the changed values.
+		assertEquals("Expected the 3rd value to be 'E'", "E", itr.next());
+		assertEquals("Expected the 4th value to be 'F'", "F", itr.next());
+		
+		// Change some more values 
 		b[0] ="X"; b[1] = "Y"; b[2] = "Z";
-		assertEquals("Expected the 5th value to be 'X'", "X", itr.next());
-		assertEquals("Expected the 6th value to be 'Y'", "Y", itr.next());
-		assertEquals("Expected the 7th value to be 'Z'", "Z", itr.next());
-		assertEquals("Expected the 8th value to be 'G'", "G", itr.next());
+		
+		// Make sure we ignore the changed values.		
+		assertEquals("Expected the 5th value to be 'G'", "G", itr.next());
 		
 		// Add a whole new array
 		String[] d = {"J", "K"};
@@ -415,15 +425,6 @@ public class StringIteratorTests {
 		
 		assertEquals("Expected the 9th value to be 'H'", "H", itr.next());
 		assertEquals("Expected the 10th value to be 'I'", "I", itr.next());						
-		assertEquals("Expected the 11th value to be 'J'", "J", itr.next());
-		assertEquals("Expected the 12th value to be 'K'", "K", itr.next());
-		
-		assertFalse("Expected the iterator to return only 12 values", itr.hasNext());
-		String[] e = {"L", "M"};
-		arrays[4] = e;
-		
-		assertEquals("Expected the 13th value to be 'L'", "L", itr.next());
-		assertEquals("Expected the 14th value to be 'M'", "M", itr.next());
 		
 		
 	}
@@ -444,16 +445,26 @@ public class StringIteratorTests {
 		assertEquals("Expected the 1st value to be 'A'", "A", itr.next());
 		assertEquals("Expected the 2nd value to be 'B'", "B", itr.next());
 		
+		// Remove some items from the underlying array
 		a[2] = null; a[3] = null;
-		assertEquals("Expected the 3rd value to be 'E'", "E", itr.next());
-		assertEquals("Expected the 4th value to be 'F'", "F", itr.next());
-		assertEquals("Expected the 5th value to be 'G'", "G", itr.next());
 		
+		// Make sure we ignore these changes
+		assertEquals("Expected the 3rd value to be 'C'", "C", itr.next());
+		assertEquals("Expected the 4th value to be 'D'", "D", itr.next());
+		assertEquals("Expected the 5th value to be 'E'", "E", itr.next());
+		
+		// Remove one of the arrays
 		arrays[2] = null;
 		
-		assertEquals("Expected the 6th value to be 'K'", "K", itr.next());
-		assertEquals("Expected the 7th value to be 'L'", "L", itr.next());
-		assertEquals("Expected the 8th value to be 'M'", "M", itr.next());
+		// Make sure we ignore the change
+		assertEquals("Expected the 6th value to be 'F'", "F", itr.next());
+		assertEquals("Expected the 7th value to be 'G'", "G", itr.next());
+		assertEquals("Expected the 8th value to be 'H'", "H", itr.next());
+		assertEquals("Expected the 9th value to be 'I'", "I", itr.next());
+		assertEquals("Expected the 10th value to be 'J'", "J", itr.next());
+		assertEquals("Expected the 10th value to be 'K'", "K", itr.next());
+		assertEquals("Expected the 10th value to be 'L'", "L", itr.next());
+		assertEquals("Expected the 10th value to be 'M'", "M", itr.next());
 		
 	}
 	
@@ -472,7 +483,7 @@ public class StringIteratorTests {
 		int counter = 0;
 		while(itr.hasNext()) {
 			counter++;
-			String s = itr.next();
+			itr.next();
 		}
 		
 		assertEquals(13, counter);

@@ -1,35 +1,35 @@
-package com.apple.interview;
+package com.apple.interview.cache;
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 
 import org.junit.Before;
 import org.junit.Test;
 
+import com.apple.interview.AppleExercise;
 import com.apple.interview.AppleExercise.Problem1.Cache;
 
 /**
- * A collection of tests that ALL Cache implements must pass
- * in order to be considered a fully functional Cache.
- * 
- * @author David Kjerrumgaard
+ * Copyright (C) 2010 Apple Inc.
  *
+ * Add unit tests that will help verify that your implementation
+ * for each problem is correct.
+ *
+ * Use junit annotations to identify your test methods.
  */
-public abstract class AbstractCacheTest {
+public class SingletonCacheTest {
 
 	protected Cache cache;
 	
+	
 	/* ---------------------------------------------------
-	 * Abstract method definitions
+	 * Initialization
 	 * ---------------------------------------------------
 	 */
-	protected abstract AppleExercise.Problem1.Cache getCache();
-	
-	
 	@Before
 	public void setUp() {
-		cache = getCache();
+		cache = AppleExercise.Problem1.SingletonCache.getInstance();
 	}
-	
 	
 	/* ---------------------------------------------------
 	 * Test Cases
@@ -65,11 +65,11 @@ public abstract class AbstractCacheTest {
 		assertEquals("bar", cache.get("duplicate"));
 	}
 	
-	
 	@Test
 	public void getTest() {
 		assertNull(cache.get("key"));
 		cache.put("key", "value");
 		assertEquals("value", cache.get("key"));
 	}
+	
 }

@@ -1,4 +1,4 @@
-package com.apple.interview;
+package com.apple.interview.cache;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
@@ -8,7 +8,14 @@ import org.junit.Test;
 
 import com.apple.interview.AppleExercise.Problem1.GenericCache;
 
-
+/**
+ * Copyright (C) 2010 Apple Inc.
+ *
+ * Add unit tests that will help verify that your implementation
+ * for each problem is correct.
+ *
+ * Use junit annotations to identify your test methods.
+ */
 public class GenericCacheTest  {
 
 	private GenericCache<String, Integer> cache;

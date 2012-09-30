@@ -1,4 +1,4 @@
-package com.apple.interview.iterator;
+package com.apple.interview.iterator.mutable;
 
 
 public class TwoDimArrayBackedIterator<E> extends MultiDimArrayBackedIterator<E> {
@@ -13,7 +13,7 @@ public class TwoDimArrayBackedIterator<E> extends MultiDimArrayBackedIterator<E>
 	protected void increment() {
 		
 		if ( (arrays == null) || (currentArrayPointer >= arrays.length) )
-			currentIterator = new ArrayBackedIterator<E>((E[])null);
+			currentIterator = new NullIterator<E>();
 		else {
 			
 			E[] next = null;
@@ -22,7 +22,7 @@ public class TwoDimArrayBackedIterator<E> extends MultiDimArrayBackedIterator<E>
 			} while ( (next == null) && (currentArrayPointer < arrays.length));
 
 			if (next != null)
-				currentIterator = new ArrayBackedIterator<E>(next);
+				currentIterator = new OneDimArrayIterator<E>(next);
 		}
 		
 	}

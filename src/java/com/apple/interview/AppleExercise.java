@@ -6,11 +6,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import com.apple.interview.iterator.ArrayBackedIterator;
-import com.apple.interview.iterator.IteratorBackedIterator;
-import com.apple.interview.iterator.IteratorFactory;
-import com.apple.interview.iterator.ThreeDimArrayBackedIterator;
-import com.apple.interview.iterator.TwoDimArrayBackedIterator;
+import com.apple.interview.iterator.immutable.ImmutableIteratorFactory;
 
 /**
  * Copyright (C) 2010 Apple Inc.
@@ -209,7 +205,7 @@ public class AppleExercise {
          * @return an iterator of strings
          */
         public static Iterator<String> iterateStrings(String... strings) {
-            return IteratorFactory.iterator(strings);
+            return ImmutableIteratorFactory.iterator(strings);
         }
 
         /**
@@ -222,7 +218,7 @@ public class AppleExercise {
          * @return an {@link java.util.Iterator} of {@code String}s
          */
         public static Iterator<String> iterateStrings(Iterator<String>... stringIterators) {
-            return IteratorFactory.iterator(stringIterators);
+            return ImmutableIteratorFactory.iterator(stringIterators);
         }
 
         /**
@@ -235,7 +231,7 @@ public class AppleExercise {
          * @return an {@link java.util.Iterator} of {@code String}s
          */
         public static Iterator<String> iterateStrings(String[]... stringArrays) {
-        	return IteratorFactory.iterator(stringArrays);
+        	return ImmutableIteratorFactory.iterator(stringArrays);
         }
 
         /**
@@ -248,7 +244,7 @@ public class AppleExercise {
          * @return an {@link java.util.Iterator} of {@code Integer}s
          */
         public static Iterator<Integer> iterateInts(Integer[][]... twoDimensionalIntArrays) {            
-            return IteratorFactory.iterator(twoDimensionalIntArrays);
+            return ImmutableIteratorFactory.iterator(twoDimensionalIntArrays);
         }
 
         /**
@@ -260,9 +256,8 @@ public class AppleExercise {
          * @param integerSetList a list of nullable {@code LinkedHashSet}s of nullable {@code Integer}s
          * @return an {@link java.util.Iterator} of {@code Integer}s
          */
-        public static Iterator<Integer> iterateInts2(List<LinkedHashSet<Integer>> integerSetList) {
-            // TODO
-            return null;
+        public static Iterator<Integer> iterateInts2(List<LinkedHashSet<Integer>> integerSetList) {       
+            return ImmutableIteratorFactory.iterator(integerSetList);
         }
 
         /**
