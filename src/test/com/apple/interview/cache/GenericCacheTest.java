@@ -62,5 +62,6 @@ public class GenericCacheTest  {
 		cache.put("key", 5);
 		assertEquals(5, cache.get("key").intValue());
 	}
+	
 
 }

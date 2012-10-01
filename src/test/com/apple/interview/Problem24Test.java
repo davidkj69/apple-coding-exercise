@@ -1,23 +1,18 @@
-package com.apple.interview.iterator.immutable;
+package com.apple.interview;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Iterator;
-import java.util.LinkedHashSet;
-import java.util.List;
 
 import org.junit.Test;
 
-import com.apple.interview.AppleExercise;
 import com.apple.interview.AppleExercise.Problem2;
 
-
-public class ImmutableIntegerIteratorTest {
+public class Problem24Test {
 
 	/* ---------------------------------------------------
 	 * Test Cases for Problem 2.4
@@ -175,174 +170,21 @@ public class ImmutableIntegerIteratorTest {
 		assertEquals(34, counter);
 	}
 	
-	
-	/* ---------------------------------------------------
-	 * Test Cases for Problem 2.5
-	 * ---------------------------------------------------
-	 */
 	@Test
-	public void nullListTest() {
-		List<LinkedHashSet<Integer>> integerSetList = null;
-		Iterator<Integer> itr = Problem2.iterateInts2(integerSetList);
-		assertNotNull(itr);
-		assertFalse(itr.hasNext());
-	}
-	
-	@Test
-	public void listWithoutNullsTest() {
-		LinkedHashSet<Integer> a = new LinkedHashSet<Integer> ();
-		LinkedHashSet<Integer> b = new LinkedHashSet<Integer> ();
-		LinkedHashSet<Integer> c = new LinkedHashSet<Integer> ();
+	public void mutuataionTest() {
 		
-		for (int idx = 0; idx < 10; idx++) {
-			a.add(idx); 
-			b.add(idx + 10); 
-			c.add(idx + 20); c.add(null);
-		}		
-		
-		a.add(null);
-		b.add(null);
-		
-		List<LinkedHashSet<Integer>> integerSetList = new ArrayList<LinkedHashSet<Integer>> ();
-		integerSetList.add(a);
-		integerSetList.add(b);
-		integerSetList.add(c);
-		
-		Iterator<Integer> itr = Problem2.iterateInts2(integerSetList);
-		assertNotNull(itr);
-		assertTrue(itr.hasNext());
-		
-		// All the numbers from 0 to 29 should be returned in increasing order
-		for (int idx = 0; idx < 30; idx++) {			
-			assertEquals(idx, itr.next().intValue());
-		}
-		
-	}
-	
-	@Test
-	public void listWithNullsTest() {
-		LinkedHashSet<Integer> a = new LinkedHashSet<Integer> ();
-		LinkedHashSet<Integer> b = new LinkedHashSet<Integer> ();
-		LinkedHashSet<Integer> c = new LinkedHashSet<Integer> ();
-		
-		for (int idx = 0; idx < 10; idx++) {
-			a.add(idx); 
-			b.add(idx + 10); 
-			c.add(idx + 20); c.add(null);
-		}		
-		
-		a.add(null);
-		b.add(null);
-		
-		List<LinkedHashSet<Integer>> integerSetList = new ArrayList<LinkedHashSet<Integer>> ();
-		integerSetList.add(null);
-		integerSetList.add(a);
-		integerSetList.add(b);
-		integerSetList.add(null);
-		integerSetList.add(c);
-		integerSetList.add(null);
-		
-		Iterator<Integer> itr = Problem2.iterateInts2(integerSetList);		
-		assertNotNull(itr);
-		assertTrue(itr.hasNext());
-		
-		// All the numbers from 0 to 29 should be returned in increasing order
-		for (int idx = 0; idx < 30; idx++) {			
-			assertEquals(idx, itr.next().intValue());
-		}
-	}
-	
-	@Test
-	public void listAdditionTest() {
-		LinkedHashSet<Integer> a = new LinkedHashSet<Integer> ();
-		LinkedHashSet<Integer> b = new LinkedHashSet<Integer> ();
-		LinkedHashSet<Integer> c = new LinkedHashSet<Integer> ();
-		
-		for (int idx = 0; idx < 10; idx++) {
-			a.add(idx); 
-			b.add(idx + 10); 
-			c.add(idx + 20); c.add(null);
-		}
-		
-		List<LinkedHashSet<Integer>> integerSetList = new ArrayList<LinkedHashSet<Integer>> ();
-		integerSetList.add(a);
-		integerSetList.add(b);
-		integerSetList.add(c);
-					
-		Iterator<Integer> itr = Problem2.iterateInts2(integerSetList);
+		Integer [][][] a = { { {1,2,3,4,5,6, null,7}, {8,9,10,null, 11,12,13,14} },
+	             { {null, 15,16,17}, {18,19,20,21,22, null,23,24} }, 
+	             { {25,26, null, 27}, {28,29,30,31,32,33,34, null} }};
+
+		Iterator<Integer> itr = Problem2.iterateInts(a);
 		assertNotNull(itr);
 		
-		for (int idx = 0; idx < 5; idx++) {			
-			assertEquals(idx, itr.next().intValue());
-		}
-		
-		a.add(56);
-		
-		for (int idx = 5; idx < 30; idx++) {			
-			assertEquals(idx, itr.next().intValue());
-		}
-		
-	}
-	
-	@Test
-	public void listRemovalTest() {
-		
-		LinkedHashSet<Integer> a = new LinkedHashSet<Integer> ();
-		LinkedHashSet<Integer> b = new LinkedHashSet<Integer> ();
-		LinkedHashSet<Integer> c = new LinkedHashSet<Integer> ();
-		
-		for (int idx = 0; idx < 10; idx++) {
-			a.add(idx); 
-			b.add(idx + 10); 
-			c.add(idx + 20); c.add(null);
-		}
-				
-		List<LinkedHashSet<Integer>> integerSetList = new ArrayList<LinkedHashSet<Integer>> ();
-		integerSetList.add(a);
-		integerSetList.add(b);
-		integerSetList.add(c);
-					
-		Iterator<Integer> itr = Problem2.iterateInts2(integerSetList);
-		assertNotNull(itr);
-		
-		for (int idx = 0; idx < 5; idx++) {			
-			assertEquals(idx, itr.next().intValue());
-		}
-		
-		a.remove(7);
-		
-		for (int idx = 5; idx < 30; idx++) {			
-			assertEquals(idx, itr.next().intValue());
+		try {
+			itr.remove();
+			fail("Excpected an UnsupportedOperationException to be thrown");
+		} catch (final UnsupportedOperationException ex) {
+			assertEquals("Fail-safe implementation does not allow for mutation of the underlying data strucutre.", ex.getMessage());
 		}
 	}
-	
-	@Test
-	public void listBasicLoopTest() {
-		LinkedHashSet<Integer> a = new LinkedHashSet<Integer> ();
-		LinkedHashSet<Integer> b = new LinkedHashSet<Integer> ();
-		LinkedHashSet<Integer> c = new LinkedHashSet<Integer> ();
-		
-		for (int idx = 0; idx < 10; idx++) {
-			a.add(idx); 
-			b.add(idx + 10); 
-			c.add(idx + 20); c.add(null);
-		}
-		
-		List<LinkedHashSet<Integer>> integerSetList = new ArrayList<LinkedHashSet<Integer>> ();
-		integerSetList.add(a);
-		integerSetList.add(b);
-		integerSetList.add(c);
-					
-		Iterator<Integer> itr = Problem2.iterateInts2(integerSetList);
-		assertNotNull(itr);
-		
-		int counter = 0;
-		while(itr.hasNext()) {
-			counter++;
-			itr.next();
-		}
-		
-		assertEquals(30, counter);
-	}
-	
 }
