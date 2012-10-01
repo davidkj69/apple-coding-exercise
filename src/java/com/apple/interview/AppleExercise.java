@@ -402,11 +402,17 @@ public class AppleExercise {
          * Answer the following questions:
          *
          *   a) Which method is it?
+         *   
+         *   	public static Iterator<String> iterateStrings(String... strings);
          *
          *   b) Does the java compiler let you know? If not, how can you tell? If so, what warning or error
          *      will the compiler give you?
+         *      
+         *   	No, the compiler does not let you know.
          *
          *   c) What can you do to avoid the problem?
+         *   
+         *   	Avoid explicit casting of the Arrays prior to invoking the method.
          */
     }
 
