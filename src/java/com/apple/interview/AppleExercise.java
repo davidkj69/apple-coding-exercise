@@ -425,7 +425,7 @@ public class AppleExercise {
      * a data type required by the underlying constructor and purged of any null values. 
      *
      */
-    public static class InteratorFactory {
+    private static class InteratorFactory {
 
     	/* ---------------------------------------------------
     	 * Factory methods
